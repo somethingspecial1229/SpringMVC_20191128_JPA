@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.web.mvc.entity.JPAUtil;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 
 public class Test1 {
 
@@ -14,7 +15,9 @@ public class Test1 {
         //get(1L);
         //query();
         //update(1L,"小美");
-        delete(1L);
+        //delete(1L);
+        //query("老王");
+        queryKeyword("老%"); // 老%, %老% %老
     }
 
     public static void add(String name) {
@@ -39,6 +42,24 @@ public class Test1 {
         String json = mapper.writeValueAsString(list);
         System.out.println(json);
     }
+    
+    public static void query(String name) throws Exception {
+        TypedQuery<Person> q = em.createQuery("Select p From Person p Where p.name =:name", Person.class);
+        q.setParameter("name", name);
+        List<Person> list = q.getResultList();
+        ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writeValueAsString(list);
+        System.out.println(json);
+    }
+    
+    public static void queryKeyword(String keyword) throws Exception {
+        TypedQuery<Person> q = em.createQuery("Select p From Person p Where p.name like :keyword", Person.class);
+        q.setParameter("keyword", keyword);
+        List<Person> list = q.getResultList();
+        ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writeValueAsString(list);
+        System.out.println(json);
+    }
 
     public static void update(Long id, String name) throws Exception {
         Person person = em.find(Person.class, id);
@@ -59,7 +80,7 @@ public class Test1 {
             em.getTransaction().begin();
             em.remove(person);
             em.getTransaction().commit();
-            System.out.println("update OK !");
+            System.out.println("delete OK !");
         } else {
             System.out.println("查無此資料");
         }

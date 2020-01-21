@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -23,11 +24,15 @@ public class Car {
     @Column
     private String name;
     
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "price_id")
+    private Price price;
+    
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "driver_id", referencedColumnName = "id")//新增參考driver的id欄位,給一個名稱為driver_id
-    @JsonIgnoreProperties("cars")//避免遞迴
+    @JoinColumn(name = "driver_id", referencedColumnName = "id")
+    @JsonIgnoreProperties("cars")
     private Driver driver;
-
+    
     public Long getId() {
         return id;
     }
@@ -50,6 +55,14 @@ public class Car {
 
     public void setDriver(Driver driver) {
         this.driver = driver;
+    }
+
+    public Price getPrice() {
+        return price;
+    }
+
+    public void setPrice(Price price) {
+        this.price = price;
     }
     
     

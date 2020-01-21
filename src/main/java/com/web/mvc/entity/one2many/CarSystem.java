@@ -5,6 +5,7 @@ import com.web.mvc.entity.JPAUtil;
 import java.util.List;
 import java.util.Scanner;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 public class CarSystem {
     static EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager();
@@ -16,6 +17,7 @@ public class CarSystem {
         System.out.println("2. 新增 Car");
         System.out.println("3. 查詢 Drivers");
         System.out.println("4. 查詢 Cars");
+        System.out.println("5. 單查 Driver");
         System.out.println("0. 離開 Exit");
         System.out.println("-----------------");
         Scanner sc = new Scanner(System.in);
@@ -34,6 +36,13 @@ public class CarSystem {
                 break;
             case "4":
                 queryCars();
+                break;
+            case "5":
+                System.out.println("請輸入要查詢的 Driver 名稱: ");
+                Object driver = getDriver(sc.next());
+                if (driver != null) {
+                    System.out.println(obj.writeValueAsString(driver));
+                }
                 break;
             case "0":    
                 return;
@@ -69,6 +78,18 @@ public class CarSystem {
         em.clear();
         List<Car> cars = em.createQuery("Select c From Car c").getResultList();
         System.out.println(obj.writeValueAsString(cars));
+    }
+    
+    public static Object getDriver(String name){
+        Query q = em.createQuery("Select d From Driver d Where d.name =:name");
+        q.setParameter("name", name);
+        int size = q.getResultList().size();
+        if(size == 0) {
+            System.out.println("查無此人");
+            return null;
+        }
+        Driver driver = (Driver)q.getSingleResult();
+        return driver;
     }
     
     public static void main(String[] args)throws Exception {

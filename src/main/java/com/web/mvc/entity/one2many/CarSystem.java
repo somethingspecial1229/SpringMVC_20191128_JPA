@@ -18,6 +18,9 @@ public class CarSystem {
         System.out.println("3. 查詢 Drivers");
         System.out.println("4. 查詢 Cars");
         System.out.println("5. 單查 Driver");
+        System.out.println("6. 單查 Car");
+        System.out.println("7. 買車");
+        System.out.println("8. 賣車(過戶)");
         System.out.println("0. 離開 Exit");
         System.out.println("-----------------");
         Scanner sc = new Scanner(System.in);
@@ -44,6 +47,29 @@ public class CarSystem {
                     System.out.println(obj.writeValueAsString(driver));
                 }
                 break;
+            case "6":
+                System.out.println("請輸入要查詢的 Car 名稱: ");
+                Object car = getCar(sc.next());
+                if (car != null) {
+                    System.out.println(obj.writeValueAsString(car));
+                }
+                break;
+            case "7":
+                System.out.println("請輸入買車人(Driver): ");
+                String driverName = sc.next();
+                System.out.println("請輸入車名(Car): ");
+                String carName = sc.next();
+                buyCar(driverName, carName);
+                break;    
+            case "8":
+                System.out.println("請輸入賣車人(Driver): ");
+                String sellerName = sc.next();
+                System.out.println("請輸入車名(Car): ");
+                String sellerCarName = sc.next();
+                System.out.println("請輸入買車人(Driver): ");
+                String buyerName = sc.next();
+                sellCar(sellerName, sellerCarName, buyerName);
+                break;    
             case "0":    
                 return;
         }
@@ -80,7 +106,7 @@ public class CarSystem {
         System.out.println(obj.writeValueAsString(cars));
     }
     
-    public static Object getDriver(String name){
+    public static Object getDriver(String name) {
         Query q = em.createQuery("Select d From Driver d Where d.name =:name");
         q.setParameter("name", name);
         int size = q.getResultList().size();
@@ -88,11 +114,71 @@ public class CarSystem {
             System.out.println("查無此人");
             return null;
         }
-        Driver driver = (Driver)q.getSingleResult();
-        return driver;
+        return q.getSingleResult();
     }
     
-    public static void main(String[] args)throws Exception {
+    public static Object getCar(String name) {
+        Query q = em.createQuery("Select c From Car c Where c.name =:name");
+        q.setParameter("name", name);
+        int size = q.getResultList().size();
+        if(size == 0) {
+            System.out.println("查無此車");
+            return null;
+        }
+        return q.getSingleResult();
+    }
+    
+    public static void buyCar(String driverName, String carName) {
+        Object o1 = getDriver(driverName);
+        if(o1 == null) {
+            System.out.println("查無此人");
+            return;
+        }
+        Object o2 = getCar(carName);
+        if(o2 == null) {
+            System.out.println("查無此車");
+            return;
+        }
+        //轉型
+        Driver driver = (Driver)o1;
+        Car car = (Car)o2;
+        
+        car.setDriver(driver);
+        em.getTransaction().begin();
+        em.persist(car);
+        em.getTransaction().commit();
+        System.out.println("買車成功 !");
+    }
+    
+    public static void sellCar(String sellerName, String carName, String buyerName) {
+        Object o1 = getDriver(sellerName);
+        if(o1 == null) {
+            System.out.println("查無此賣家");
+            return;
+        }
+        Object o2 = getCar(carName);
+        if(o2 == null) {
+            System.out.println("查無此車");
+            return;
+        }
+        Object o3 = getDriver(buyerName);
+        if(o3 == null) {
+            System.out.println("查無此買家");
+            return;
+        }
+        //轉型
+        Car car = (Car)o2;
+        Driver buyer = (Driver)o3;
+        
+        car.setDriver(buyer);
+        
+        em.getTransaction().begin();
+        em.persist(car);
+        em.getTransaction().commit();
+        System.out.println("賣車(過戶)成功 !");
+    }
+    
+    public static void main(String[] args) throws Exception {
         menu();
     }
 }

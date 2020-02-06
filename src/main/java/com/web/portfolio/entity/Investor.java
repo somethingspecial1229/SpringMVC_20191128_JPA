@@ -42,10 +42,11 @@ public class Investor implements Serializable {
     public Investor() {
     }
 
-    public Investor(String username, String password, String email) {
+    public Investor(String username, String password, String email, Integer balance) {
         this.username = username;
         this.password = password;
         this.email = email;
+        this.balance = balance;
     }
     
     public Long getId() {
@@ -109,4 +110,5 @@ public class Investor implements Serializable {
         return "Investor{" + "id=" + id + ", username=" + username + ", password=" + password + ", email=" + email + ", balance=" + balance + '}';
     }
 
+    
 }

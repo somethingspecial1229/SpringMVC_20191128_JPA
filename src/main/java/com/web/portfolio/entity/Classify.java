@@ -22,7 +22,7 @@ public class Classify implements Serializable {
     private String name;
     
     @Column
-    private boolean transaction;
+    private Boolean transaction;
     
     @OneToMany(cascade=CascadeType.PERSIST, mappedBy="classify")
     @JsonIgnoreProperties("classify")
@@ -31,8 +31,9 @@ public class Classify implements Serializable {
     public Classify() {
     }
 
-    public Classify(String name) {
+    public Classify(String name, Boolean transaction) {
         this.name = name;
+        this.transaction = transaction;
     }
     
     public Long getId() {
@@ -59,11 +60,11 @@ public class Classify implements Serializable {
         this.tStocks = tStocks;
     }
 
-    public boolean isTransaction() {
+    public Boolean getTransaction() {
         return transaction;
     }
 
-    public void setTransaction(boolean transaction) {
+    public void setTransaction(Boolean transaction) {
         this.transaction = transaction;
     }
 
@@ -71,7 +72,6 @@ public class Classify implements Serializable {
     public String toString() {
         return "Classify{" + "id=" + id + ", name=" + name + ", transaction=" + transaction + '}';
     }
-
-   
+    
     
 }

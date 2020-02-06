@@ -27,6 +27,9 @@ public class Investor implements Serializable {
     
     @Column
     private String email;
+    
+    @Column
+    private Integer balance;
 
     @OneToMany(cascade=CascadeType.PERSIST, mappedBy="investor")
     @JsonIgnoreProperties("investor")
@@ -93,10 +96,17 @@ public class Investor implements Serializable {
         this.watchs = watchs;
     }
 
+    public Integer getBalance() {
+        return balance;
+    }
+
+    public void setBalance(Integer balance) {
+        this.balance = balance;
+    }
+
     @Override
     public String toString() {
-        return "Investor{" + "id=" + id + ", username=" + username + ", password=" + password + ", email=" + email + '}';
+        return "Investor{" + "id=" + id + ", username=" + username + ", password=" + password + ", email=" + email + ", balance=" + balance + '}';
     }
-    
-    
+
 }

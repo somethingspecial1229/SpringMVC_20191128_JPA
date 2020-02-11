@@ -93,6 +93,11 @@ public class Watch implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    public String toString() {
+        return "Watch{" + "id=" + id + ", name=" + name + '}';
+    }
     
     
 }

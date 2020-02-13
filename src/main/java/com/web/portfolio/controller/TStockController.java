@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/portfolio/tstock")
-public class TStockController_1 {
+public class TStockController {
 
     @PersistenceContext
     protected EntityManager em;

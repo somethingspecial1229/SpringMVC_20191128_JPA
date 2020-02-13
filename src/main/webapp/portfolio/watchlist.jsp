@@ -11,6 +11,12 @@
             $(document).ready(function () {
                 watchList();
                 queryHistQuotes('^TWII');
+                
+                $("#myTable").on("click", "tr td:nth-child(3)", function () {
+                    var symbol = $(this).text();
+                    //alert(symbol);
+                    queryHistQuotes(symbol);
+                });
             });
 
             function watchList() {

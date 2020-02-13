@@ -11,11 +11,34 @@
             $(document).ready(function () {
                 watchList();
                 queryHistQuotes('^TWII');
-                
+                // 走勢圖
                 $("#myTable").on("click", "tr td:nth-child(3)", function () {
                     var symbol = $(this).text();
                     //alert(symbol);
                     queryHistQuotes(symbol);
+                });
+                // 下單
+                $("#myTable").on("click", "tr td:nth-child(10)", function () {
+                    var tstock_id = $(this).attr('tstock_id');
+                    if (tstock_id == '') return;
+                    if (confirm("是否要買進？")) {
+                        amount = prompt("請輸入購買股數(請以1000股為單位)？", "1000");
+                        if(amount == null) return;
+                        if(parseInt(amount) % 1000 != 0) {
+                            alert('請輸入1000的倍數(1張=1000股)');
+                            return;
+                        }
+                        $.ajax({
+                            url: "/SpringMVC_20191128_JPA/mvc/portfolio/order/buy/" + tstock_id + "/" + amount,
+                            type: "GET",
+                            async: true, 
+                            cache: false,  
+                            processData: false, //To avoid making query String instead of JSON
+                            success: function (resposeJsonObject) {
+                               alert('成交回報: ' + resposeJsonObject);
+                            }
+                        });
+                    }
                 });
             });
 

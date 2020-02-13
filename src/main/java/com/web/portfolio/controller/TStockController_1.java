@@ -17,14 +17,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import yahoofinance.Stock;
-import yahoofinance.YahooFinance;
-import yahoofinance.histquotes.HistoricalQuote;
-import yahoofinance.histquotes.Interval;
 
 @RestController
 @RequestMapping("/portfolio/tstock")
-public class TStockController {
+public class TStockController_1 {
 
     @PersistenceContext
     protected EntityManager em;
@@ -77,16 +73,4 @@ public class TStockController {
         return list;
     }
 
-    @GetMapping(value = {"/refresh"}) // 更新股價
-    @Transactional
-    public List<TStock> refresh() {
-        // 待撰寫
-        return null;
-    }
-
-    @GetMapping(value = {"/histquotes/{symbol}"}) // 歷史股價
-    public List<HistoricalQuote> queryHistQuotes(@PathVariable("symbol") String symbol) {
-        // 待撰寫
-        return null;
-    }
 }

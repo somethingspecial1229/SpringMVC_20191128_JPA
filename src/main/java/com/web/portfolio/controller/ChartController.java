@@ -24,7 +24,9 @@ public class ChartController {
                    + "GROUP BY c.name";
         Query query = em.createQuery(sql);
         query.setParameter("id", id);
-        return query.getResultList();
+        List list = query.getResultList();
+        System.out.println(list);
+        return list;
     }
     
     @GetMapping(value = {"/profit/{id}"})
@@ -35,7 +37,9 @@ public class ChartController {
                    + "GROUP BY c.name";
         Query query = em.createQuery(sql);
         query.setParameter("id", id);
-        return query.getResultList();
+        List list = query.getResultList();
+        System.out.println(list);
+        return list;
     }
     
 }

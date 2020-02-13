@@ -4,16 +4,13 @@
     <head>
         <!-- head -->
         <%@include file="/WEB-INF/jsp/include/head.jspf"  %>
+        
         <!-- Asset -->
         <script>
             var investor_id = ${sessionScope.investor.id};
             $(document).ready(function () {
                 // 更新asset列表
                 update();
-                
-                // 繪圖
-                chart(investor_id);
-                
                 // 賣出
                 $("#myTable").on("click", "tr td:nth-child(10)", function () {
                     if (confirm("是否要賣出？")) {
@@ -37,7 +34,7 @@
                                     update();
                                 });
                                 alert('成交回報: ' + resposeJsonObject);
-
+                                chart();
                             }
                         });
                     }
@@ -67,6 +64,7 @@
                                     update();
                                 });
                                 alert('成交回報: ' + resposeJsonObject);
+                                chart();
                             }
                         });
                     }
@@ -127,7 +125,9 @@
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
         <script>
             google.charts.load('current', {'packages': ['corechart']});
-            function chart(investor_id) {
+            google.charts.setOnLoadCallback(chart);
+            
+            function chart() {
                 $("#piechart_asset").empty();
                 $("#barchart_profit").empty();
                 $.ajax({

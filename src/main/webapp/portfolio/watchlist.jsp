@@ -10,7 +10,6 @@
 
             $(document).ready(function () {
                 watchList();
-                queryHistQuotes('^TWII');
                 // 走勢圖
                 $("#myTable").on("click", "tr td:nth-child(3)", function () {
                     var symbol = $(this).text();
@@ -48,12 +47,12 @@
                     // 請撰寫
                     $("#myTable tbody > tr").remove();
                     $.each(data.tStocks, function (i, item) {
-                        var html = '<tr>'+
-                                   '<td align="center">{0}</td><td>{1}</td><td>{2}</td>'+
-                                   '<td align="right">{3}</td><td align="right">{4}</td><td align="right">{5}</td>'+
-                                   '<td align="right">{6}</td><td align="right">{7}</td><td>{8}</td>'+
-                                   '<td tstock_id="{9}">{10}</td>'+
-                                   '</tr>';
+                        var html = '<tr>' +
+                                '<td align="center">{0}</td><td>{1}</td><td>{2}</td>' +
+                                '<td align="right">{3}</td><td align="right">{4}</td><td align="right">{5}</td>' +
+                                '<td align="right">{6}</td><td align="right">{7}</td><td>{8}</td>' +
+                                '<td tstock_id="{9}">{10}</td>' +
+                                '</tr>';
                         var tstock_id = "";
                         var buybtn_html = " ";
                         if (item.classify.transaction) {
@@ -76,11 +75,14 @@
                 });
             }
         </script>
-        
+
         <!-- Chart 繪圖 -->
         <script type = "text/javascript" src = "https://www.gstatic.com/charts/loader.js"></script>
         <script>
             google.charts.load('current', {packages: ['corechart']});
+            google.charts.setOnLoadCallback(function() {
+                queryHistQuotes('^TWII');
+            });
             
             function queryHistQuotes(symbol) {
                 $.get("/SpringMVC_20191128_JPA/mvc/portfolio/price/histquotes/" + symbol, function (quotes, status) {
@@ -88,7 +90,7 @@
                     drawChart(symbol, quotes);
                 });
             }
-            
+
             function drawChart(symbol, quotes) {
                 // 建立 data 欄位
                 var data = new google.visualization.DataTable();
@@ -99,12 +101,12 @@
                 data.addColumn('number', 'Low');
                 data.addColumn('number', 'AdjClose');
                 data.addColumn('number', 'Volumn');
-                
+
                 $.each(quotes, function (i, item) {
                     var array = [getMD(quotes[i].date), quotes[i].high, quotes[i].open, quotes[i].close, quotes[i].low, quotes[i].adjClose, quotes[i].volume];
                     data.addRow(array);
                 });
-                
+
                 // 設定 chart 參數
                 var options = {
                     title: symbol + ' 日K線圖',
@@ -129,7 +131,7 @@
                 chart.draw(data, options);
             }
         </script>
-    
+
     </head>
     <body>
         <div id="layout">

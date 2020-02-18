@@ -28,7 +28,7 @@ public class InvestorController {
     
     @Autowired
     EmailService emailService;
-    
+   
     @GetMapping(value = {"/", "/query"})
     public List<Investor> query() {
         Query query = em.createQuery("select i from Investor i");
@@ -96,15 +96,5 @@ public class InvestorController {
         return get(id) == null ? true : false;
     }
     
-    @GetMapping("/verify/{id}/{code}")
-    @Transactional
-    public String verify(@PathVariable("id") Long id, @PathVariable("code") String code) {
-        Investor investor = em.find(Investor.class, id);
-        if(investor.getCode().equals(code)) {
-            investor.setPass(Boolean.TRUE);
-            em.persist(investor);
-            return "Verify OK !";
-        }
-        return "Verify Error !";
-    }
+    
 }

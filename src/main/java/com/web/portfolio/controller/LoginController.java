@@ -23,7 +23,7 @@ public class LoginController {
             @RequestParam("password") String password) {
         System.out.println(referer);
         try {
-            String sql = "Select i From Investor i Where i.username=:username";
+            String sql = "Select i From Investor i Where i.pass=true And i.username=:username";
             Investor investor = em.createQuery(sql, Investor.class)
                     .setParameter("username", username)
                     .getSingleResult();

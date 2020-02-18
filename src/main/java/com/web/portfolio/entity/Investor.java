@@ -31,6 +31,13 @@ public class Investor implements Serializable {
     
     @Column
     private Integer balance;
+    
+    @Column
+    private String code;
+    
+    @Column
+    private Boolean pass;
+    
 
     @OneToMany(cascade=CascadeType.PERSIST, mappedBy="investor", fetch = FetchType.EAGER)
     @JsonIgnoreProperties("investor")
@@ -106,10 +113,25 @@ public class Investor implements Serializable {
         this.balance = balance;
     }
 
-    @Override
-    public String toString() {
-        return "Investor{" + "id=" + id + ", username=" + username + ", password=" + password + ", email=" + email + ", balance=" + balance + '}';
+    public String getCode() {
+        return code;
     }
 
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public Boolean getPass() {
+        return pass;
+    }
+
+    public void setPass(Boolean pass) {
+        this.pass = pass;
+    }
+
+    @Override
+    public String toString() {
+        return "Investor{" + "id=" + id + ", username=" + username + ", password=" + password + ", email=" + email + ", balance=" + balance + ", code=" + code + ", pass=" + pass + '}';
+    }
     
 }

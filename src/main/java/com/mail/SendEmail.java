@@ -25,7 +25,7 @@ import javax.mail.Transport;
 public class SendEmail {
     public static void main(String[] args) throws Exception {
         String personal = "我的投資組合"; // 發送者姓名
-        String to = "somethingspecial1229@gmail.com,sabine.tseng@gmail.com"; // 發送給誰 ? 若有多筆", "號隔開
+        String to = "sabine.tseng@gmail.com"; // 發送給誰 ? 若有多筆", "號隔開
         String title = "我的投資組合會員Email驗證通知"; // 信件 title
         String html = "Dear 顧客您好,"  // 信件內容 
                 + "<p /><a href='https://tw.yahoo.com/'>Email驗證網址</a>"

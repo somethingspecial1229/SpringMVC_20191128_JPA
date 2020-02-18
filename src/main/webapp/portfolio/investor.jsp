@@ -10,7 +10,7 @@
                 $("#myTable").on("click", "tr", function () {
                     var id = $(this).find('td').eq(0).text().trim();
                     //console.log(id);
-                    $.get("/SpringMVC_20191128_JPA/mvc/portfolio/investor/" + id, function (data, status) {
+                    $.get("/SpringMVC/mvc/portfolio/investor/" + id, function (data, status) {
                         console.log(JSON.stringify(data));
                         $("#myform").find("#id").val(data.id);
                         $("#myform").find("#username").val(data.username);
@@ -23,7 +23,7 @@
                     var jsonObj = $('#myform').serializeObject();
                     var jsonStr = JSON.stringify(jsonObj);
                     $.ajax({
-                        url: "/SpringMVC_20191128_JPA/mvc/portfolio/investor/",
+                        url: "/SpringMVC/mvc/portfolio/investor/",
                         type: "POST",
                         contentType: "application/json; charset=utf-8",
                         data: jsonStr,
@@ -40,7 +40,7 @@
                     var jsonObj = $('#myform').serializeObject();
                     var jsonStr = JSON.stringify(jsonObj);
                     $.ajax({
-                        url: "/SpringMVC_20191128_JPA/mvc/portfolio/investor/" + jsonObj.id,
+                        url: "/SpringMVC/mvc/portfolio/investor/" + jsonObj.id,
                         type: "PUT",
                         contentType: "application/json; charset=utf-8",
                         data: jsonStr,
@@ -55,7 +55,7 @@
                 $("#del").on("click", function () {
                     var id = $("#myform").find("#id").val();
                     $.ajax({
-                        url: "/SpringMVC_20191128_JPA/mvc/portfolio/investor/" + id,
+                        url: "/SpringMVC/mvc/portfolio/investor/" + id,
                         type: "DELETE",
                         async: true,
                         cache: false,
@@ -71,17 +71,19 @@
             });
 
             function table_list() {
-                $.get("/SpringMVC_20191128_JPA/mvc/portfolio/investor/", function (datas, status) {
+                $.get("/SpringMVC/mvc/portfolio/investor/", function (datas, status) {
                     console.log("Datas: " + datas);
                     $("#myTable tbody > tr").remove();
                     $.each(datas, function (i, item) {
-                        var html = '<tr><td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td><td>{4}</td></tr>';
+                        var html = '<tr><td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td><td>{4}</td><td>{5}</td><td>{6}</td></tr>';
                         $('#myTable').append(String.format(html,
                                 item.id,
                                 item.username,
                                 item.password,
                                 item.email,
-                                item.balance
+                                item.balance,
+                                item.code,
+                                item.pass
                                 ));
                     });
                 });
@@ -135,6 +137,8 @@
                                                 <th>password</th>
                                                 <th>email</th>
                                                 <th>balance</th>
+                                                <th>code</th>
+                                                <th>pass</th>
                                             </tr>
                                         </thead>
                                         <tbody>

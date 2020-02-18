@@ -2,12 +2,14 @@ package com.web.portfolio.controller;
 
 import com.web.portfolio.entity.Investor;
 import com.web.portfolio.entity.Watch;
+import com.web.portfolio.service.EmailService;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +25,9 @@ public class InvestorController {
     
     @PersistenceContext
     protected EntityManager em;
+    
+    @Autowired
+    EmailService emailService;
     
     @GetMapping(value = {"/", "/query"})
     public List<Investor> query() {
@@ -59,8 +64,13 @@ public class InvestorController {
         // 取得最新 id
         em.flush();
         Long id = investor.getId();
+        // 發送認證信件
+        emailService.send(investor);
+        
         return investor;
     }
+    
+    
     
     @PutMapping(value = {"/{id}", "/update/{id}"})
     @Transactional
@@ -84,5 +94,17 @@ public class InvestorController {
         em.remove(get(id));
         em.flush();
         return get(id) == null ? true : false;
+    }
+    
+    @GetMapping("/verify/{id}/{code}")
+    @Transactional
+    public String verify(@PathVariable("id") Long id, @PathVariable("code") String code) {
+        Investor investor = em.find(Investor.class, id);
+        if(investor.getCode().equals(code)) {
+            investor.setPass(Boolean.TRUE);
+            em.persist(investor);
+            return "Verify OK !";
+        }
+        return "Verify Error !";
     }
 }

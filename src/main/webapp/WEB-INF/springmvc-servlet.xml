@@ -19,8 +19,10 @@
     <context:component-scan base-package="com.web.mvc.repository"/>
     <context:component-scan base-package="com.web.mvc.validator"/>
     <context:component-scan base-package="com.web.mvc.entity"/>
-    
+    <!--
     <context:component-scan base-package="com.web.portfolio.controller"/>
+    -->
+    <context:component-scan base-package="com.web.portfolio.*"/>
     
     <!-- 自定converter與formatter -->
     <bean id="conversionService" 
